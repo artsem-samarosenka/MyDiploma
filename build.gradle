@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+}
+
+group = 'by.vsu'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+ext {
+    bootVersion = '2.7.5'
+    lombokVersion = '1.18.24'
+    mysqlVersion = '8.0.31'
+    mockitoVersion = '4.10.0'
+//    swaggerVersion = '3.0.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // spring
+    implementation "org.springframework.boot:spring-boot-starter-web:$bootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:$bootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-validation:$bootVersion"
+//    implementation "org.springframework.boot:spring-boot-starter-security:$bootVersion"
+//    implementation "org.springframework.boot:spring-boot-starter-thymeleaf:$bootVersion"
+    implementation "javax.xml.bind:jaxb-api:2.3.1"
+
+    // mysql
+    implementation "mysql:mysql-connector-java:$mysqlVersion"
+
+    // lombok
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    // swagger
+//    implementation "io.springfox:springfox-swagger2:$swaggerVersion"
+//    implementation "io.springfox:springfox-swagger-ui:$swaggerVersion"
+
+    // tests
+    testImplementation "org.mockito:mockito-inline:$mockitoVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$bootVersion"
+}
+
+test {
+    useJUnitPlatform()
+}
