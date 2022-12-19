@@ -11,7 +11,7 @@ ext {
     lombokVersion = '1.18.24'
     mysqlVersion = '8.0.31'
     mockitoVersion = '4.10.0'
-//    swaggerVersion = '3.0.0'
+    swaggerVersion = '3.0.0'
 }
 
 repositories {
@@ -35,8 +35,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     // swagger
-//    implementation "io.springfox:springfox-swagger2:$swaggerVersion"
-//    implementation "io.springfox:springfox-swagger-ui:$swaggerVersion"
+    implementation "io.springfox:springfox-boot-starter:$swaggerVersion"
 
     // tests
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
