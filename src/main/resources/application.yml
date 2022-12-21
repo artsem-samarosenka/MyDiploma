@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/attendance_db
-    username: root
-    password: rootroot
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/attendance_db
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:rootroot}
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher

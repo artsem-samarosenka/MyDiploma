@@ -14,9 +14,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -33,8 +36,8 @@ public class User {
     private Long id;
 
     @NotEmpty
-    @Column(name = "account_id", unique = true)
-    private String accountId;
+    @Column(name = "username", unique = true)
+    private String username;
 
     @ToString.Exclude
     @NotEmpty
@@ -45,6 +48,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private UserRole userRole;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Attendance> attendances = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

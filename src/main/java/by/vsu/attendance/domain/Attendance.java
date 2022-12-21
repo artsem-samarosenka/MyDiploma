@@ -11,10 +11,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -32,16 +36,24 @@ public class Attendance {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    // TODO OneToMane??
-    private Long userId;
-    private Long placeId;
+    @NotNull
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @NotNull
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "place_id", nullable = false)
+    private Place place;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private AttendanceStatus attendanceStatus;
 
     @PastOrPresent
-    @Column(name = "date_time")
+    @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
     @Override

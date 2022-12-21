@@ -28,16 +28,16 @@ class TeacherServiceTest {
     void getAllRoomsTest() {
         // given
         List<Room> testRooms = Arrays.asList(
-                new Room(1L, 100, 20, 1),
-                new Room(2L, 200, 15, 2),
-                new Room(3L, 300, 30, 3),
-                new Room(4L, 201, 25, 2)
+                new Room(1L, null, 100, 20, 1),
+                new Room(2L, null, 200, 15, 2),
+                new Room(3L, null, 300, 30, 3),
+                new Room(4L, null, 201, 25, 2)
         );
         List<Room> expectedRooms = Arrays.asList(
-                new Room(1L, 100, 20, 1),
-                new Room(2L, 200, 15, 2),
-                new Room(3L, 300, 30, 3),
-                new Room(4L, 201, 25, 2)
+                new Room(1L, null, 100, 20, 1),
+                new Room(2L, null, 200, 15, 2),
+                new Room(3L, null, 300, 30, 3),
+                new Room(4L, null, 201, 25, 2)
         );
 
         when(roomRepository.findAll()).thenReturn(testRooms);
@@ -54,16 +54,16 @@ class TeacherServiceTest {
     void getAllRoomsSortedTest() {
         // given
         List<Room> testRooms = Arrays.asList(
-                new Room(1L, 100, 20, 1),
-                new Room(2L, 201, 15, 2),
-                new Room(3L, 300, 30, 3),
-                new Room(4L, 200, 25, 2)
+                new Room(1L, null, 100, 20, 1),
+                new Room(2L, null, 201, 15, 2),
+                new Room(3L, null, 300, 30, 3),
+                new Room(4L, null, 200, 25, 2)
         );
         List<Room> expectedRooms = Arrays.asList(
-                new Room(1L, 100, 20, 1),
-                new Room(4L, 200, 25, 2),
-                new Room(2L, 201, 15, 2),
-                new Room(3L, 300, 30, 3)
+                new Room(1L, null, 100, 20, 1),
+                new Room(4L, null, 200, 25, 2),
+                new Room(2L, null, 201, 15, 2),
+                new Room(3L, null, 300, 30, 3)
         );
 
         when(roomRepository.findAll()).thenReturn(testRooms);
@@ -96,14 +96,14 @@ class TeacherServiceTest {
     void getAllRoomsOnTheFloorTest() {
         // given
         List<Room> testRooms = Arrays.asList(
-                new Room(2L, 200, 15, 2),
-                new Room(3L, 210, 30, 2),
-                new Room(4L, 201, 25, 2)
+                new Room(2L, null, 200, 15, 2),
+                new Room(3L, null, 210, 30, 2),
+                new Room(4L, null, 201, 25, 2)
         );
         List<Room> expectedRooms = Arrays.asList(
-                new Room(2L, 200, 15, 2),
-                new Room(3L, 210, 30, 2),
-                new Room(4L, 201, 25, 2)
+                new Room(2L, null, 200, 15, 2),
+                new Room(3L, null, 210, 30, 2),
+                new Room(4L, null, 201, 25, 2)
         );
         int floor = 2;
 
@@ -121,14 +121,14 @@ class TeacherServiceTest {
     void getAllRoomsOnTheFloorSortedTest() {
         // given
         List<Room> testRooms = Arrays.asList(
-                new Room(2L, 200, 15, 2),
-                new Room(3L, 210, 30, 2),
-                new Room(4L, 201, 25, 2)
+                new Room(2L, null, 200, 15, 2),
+                new Room(3L, null, 210, 30, 2),
+                new Room(4L, null, 201, 25, 2)
         );
         List<Room> expectedRooms = Arrays.asList(
-                new Room(2L, 200, 15, 2),
-                new Room(4L, 201, 25, 2),
-                new Room(3L, 210, 30, 2)
+                new Room(2L, null, 200, 15, 2),
+                new Room(4L, null, 201, 25, 2),
+                new Room(3L, null, 210, 30, 2)
         );
         int floor = 2;
 

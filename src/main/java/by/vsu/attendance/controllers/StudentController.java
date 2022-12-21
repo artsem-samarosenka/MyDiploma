@@ -38,12 +38,12 @@ public class StudentController {
     @PostMapping("/rooms/{roomNum}/places/{placeNum}/book")
     public void bookPlace(@PathVariable @Positive(message = "Room number should be positive") int roomNum,
                           @PathVariable @Positive(message = "Place number should be positive") int placeNum,
-                          @RequestBody @NotEmpty(message = "AccountId shouldn't be empty") String accountId) {
-        studentService.bookPlace(roomNum, placeNum, accountId);
+                          @RequestBody @NotEmpty(message = "Username shouldn't be empty") String username) {
+        studentService.bookPlace(roomNum, placeNum, username);
     }
 
     @PostMapping("/free-place")
-    public void freeAllPlaces(@RequestBody @NotEmpty(message = "AccountId shouldn't be empty") String accountId) {
+    public void freeAllPlaces(@RequestBody @NotEmpty(message = "Username shouldn't be empty") String username) {
         // TODO
     }
 
