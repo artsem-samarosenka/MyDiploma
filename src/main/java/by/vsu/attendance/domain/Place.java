@@ -21,9 +21,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "place")
@@ -33,6 +33,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Place {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -46,7 +47,7 @@ public class Place {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Attendance> attendances = new ArrayList<>();
+    private Set<Attendance> attendances = new HashSet<>();
 
     @Positive
     @Column(name = "number", nullable = false)

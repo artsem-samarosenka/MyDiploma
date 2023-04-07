@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +30,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Attendance {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -56,16 +56,26 @@ public class Attendance {
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
+    private boolean isOpen;
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Attendance that = (Attendance) o;
-        return id != null && Objects.equals(id, that.id);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Attendance that = (Attendance) obj;
+        return Objects.equals(id, that.id)
+                && Objects.equals(user, that.user)
+                && Objects.equals(place, that.place)
+                && attendanceStatus == that.attendanceStatus
+                && Objects.equals(dateTime, that.dateTime);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, user, place, attendanceStatus, dateTime);
     }
 }

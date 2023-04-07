@@ -3,6 +3,7 @@ package by.vsu.attendance.controllers;
 import by.vsu.attendance.domain.Place;
 import by.vsu.attendance.services.StudentService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +18,9 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/api/v1")
+//@RequestMapping("/api/v1")
 @AllArgsConstructor
+@Slf4j
 public class StudentController {
     private final StudentService studentService;
 
@@ -27,10 +29,10 @@ public class StudentController {
         return "Hello";
     }
 
-    @GetMapping("/rooms/{roomNum}/places/free")
+    @GetMapping("/rooms/{room}/places/free")
     public List<Place> getFreePlacesInRoom(@PathVariable
                                            @Positive(message = "Room number should be positive")
-                                           int roomNum) {
+                                           int room) {
         // TODO
         return null;
     }
@@ -39,6 +41,7 @@ public class StudentController {
     public void bookPlace(@PathVariable @Positive(message = "Room number should be positive") int roomNum,
                           @PathVariable @Positive(message = "Place number should be positive") int placeNum,
                           @RequestBody @NotEmpty(message = "Username shouldn't be empty") String username) {
+        log.info("Booking {} place in {} room for {}", placeNum, roomNum, username);
         studentService.bookPlace(roomNum, placeNum, username);
     }
 

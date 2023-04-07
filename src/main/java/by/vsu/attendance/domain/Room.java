@@ -1,5 +1,6 @@
 package by.vsu.attendance.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +17,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "room")
@@ -28,6 +29,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Room {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -35,7 +37,8 @@ public class Room {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    private List<Place> places = new ArrayList<>();
+    @JsonIgnore
+    private Set<Place> places = new HashSet<>();
 
     @Positive
     @Column(name = "number", nullable = false, unique = true)

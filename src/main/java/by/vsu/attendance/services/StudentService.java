@@ -16,18 +16,20 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class StudentService {
+
     private final UserRepository userRepository;
     private final PlaceRepository placeRepository;
     private final AttendanceRepository attendanceRepository;
 
     @Transactional
     public void bookPlace(int roomNum, int placeNum, String username) {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsername("sdt")
                 .orElseThrow(() -> new NoSuchElementException("User with username=" + username + " doesn't exist"));
         Place place = placeRepository.findByNumberAndRoomNumber(placeNum, roomNum)
                 .orElseThrow(() -> new NoSuchElementException(
@@ -35,17 +37,18 @@ public class StudentService {
                 ));
 
         if (place.getPlaceStatus() == PlaceStatus.BOOKED) {
-            log.info("{} is already BOOKED", place);
+            log.warn("{} is already BOOKED", place);    // exception = warn
             throw new PlaceBookingException("Place is already booked");
         }
 
-        // TODO check if user already booked a place
+        // TODO check if a user already booked another place
 
         Attendance attendance = new Attendance();
         attendance.setAttendanceStatus(AttendanceStatus.NOT_CONFIRMED);
         attendance.setPlace(place);
         attendance.setUser(user);
         attendance.setDateTime(LocalDateTime.now());
+        attendance.setOpen(true);
         attendanceRepository.save(attendance);
         log.debug("Saved attendance " + attendance);
 
@@ -54,5 +57,13 @@ public class StudentService {
         log.debug("Changed place {} status to {}", place, PlaceStatus.BOOKED);
 
         log.info("User {} booked place {} in the room {}", username, placeNum, roomNum);
+    }
+
+    public User getUserByBookedPlace(Place place) {
+        Optional<Attendance> attendance = place.getAttendances()
+                .stream()
+                .filter(Attendance::isOpen)
+                .findFirst();
+        return attendance.map(Attendance::getUser).orElse(null);
     }
 }
