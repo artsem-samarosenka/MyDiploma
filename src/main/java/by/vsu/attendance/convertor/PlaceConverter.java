@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -23,7 +22,7 @@ public class PlaceConverter {
     }
 
     public List<PlaceDto> entityToDto(List<Place> places) {
-        return places.stream().map(this::entityToDto).collect(Collectors.toList());
+        return places.stream().map(this::entityToDto).toList();
     }
 
     public Place dtoToEntity(PlaceDto placeDto) {
@@ -34,6 +33,6 @@ public class PlaceConverter {
     }
 
     public List<Place> dtoToEntity(List<PlaceDto> placeDtos) {
-        return placeDtos.stream().map(this::dtoToEntity).collect(Collectors.toList());
+        return placeDtos.stream().map(this::dtoToEntity).toList();
     }
 }

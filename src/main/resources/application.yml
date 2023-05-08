@@ -3,6 +3,5 @@ spring:
     url: jdbc:mysql://${DB_HOST:localhost}:3306/attendance2_db
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:rootroot}
-  mvc:
-    pathmatch:
-      matching-strategy: ant-path-matcher
+  jpa:
+    show-sql: true

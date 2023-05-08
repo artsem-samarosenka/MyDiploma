@@ -1,6 +1,7 @@
 package by.vsu.attendance.exceptions;
 
 public class PlaceBookingException extends RuntimeException {
+
     public PlaceBookingException() {
         super();
     }

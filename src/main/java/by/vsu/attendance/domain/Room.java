@@ -1,6 +1,14 @@
 package by.vsu.attendance.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,15 +16,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.Positive;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -32,7 +31,6 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @ToString.Exclude
@@ -41,14 +39,11 @@ public class Room {
     private Set<Place> places = new HashSet<>();
 
     @Positive
-    @Column(name = "number", nullable = false, unique = true)
     private int number;
 
-    @Column(name = "capacity")
     private int capacity;
 
     @Positive
-    @Column(name = "floor", nullable = false)
     private int floor;
 
     @Override

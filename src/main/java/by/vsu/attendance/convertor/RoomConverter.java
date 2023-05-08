@@ -1,13 +1,10 @@
 package by.vsu.attendance.convertor;
 
 import by.vsu.attendance.domain.Room;
-import by.vsu.attendance.domain.Room;
-import by.vsu.attendance.dto.RoomDto;
 import by.vsu.attendance.dto.RoomDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class RoomConverter {
@@ -19,7 +16,7 @@ public class RoomConverter {
     }
 
     public List<RoomDto> entityToDto(List<Room> rooms) {
-        return rooms.stream().map(this::entityToDto).collect(Collectors.toList());
+        return rooms.stream().map(this::entityToDto).toList();
     }
 
     public Room dtoToEntity(RoomDto roomDto) {
@@ -29,6 +26,6 @@ public class RoomConverter {
     }
 
     public List<Room> dtoToEntity(List<RoomDto> roomDtos) {
-        return roomDtos.stream().map(this::dtoToEntity).collect(Collectors.toList());
+        return roomDtos.stream().map(this::dtoToEntity).toList();
     }
 }

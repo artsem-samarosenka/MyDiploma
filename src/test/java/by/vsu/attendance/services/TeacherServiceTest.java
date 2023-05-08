@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class TeacherServiceTest {
+
     @Mock
     private RoomRepository roomRepository;
     @InjectMocks

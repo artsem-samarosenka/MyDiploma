@@ -1,17 +1,19 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.0.6'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 group = 'by.vsu'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 ext {
-    bootVersion = '2.7.5'
-    lombokVersion = '1.18.24'
-    mysqlVersion = '8.0.31'
-    mockitoVersion = '4.10.0'
+    lombokVersion = '1.18.26'
+    mysqlVersion = '8.0.32'
+    mockitoVersion = '5.2.0'
     swaggerVersion = '3.0.0'
+    jjwtVersion = '0.11.5'
 }
 
 repositories {
@@ -20,16 +22,17 @@ repositories {
 
 dependencies {
     // spring
-    implementation "org.springframework.boot:spring-boot-starter-web:$bootVersion"
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa:$bootVersion"
-    implementation "org.springframework.boot:spring-boot-starter-validation:$bootVersion"
-//    implementation "org.springframework.boot:spring-boot-starter-security:$bootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-security"
 
-//    implementation "org.springframework.security:spring-security-jwt"
+    // jwt
+    implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
+    implementation "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
+    implementation "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
 
     implementation "javax.xml.bind:jaxb-api:2.3.1"
-
-//    compile("org.springframework.boot:spring-boot-starter-jdcp")
 
     // mysql
     implementation "mysql:mysql-connector-java:$mysqlVersion"
@@ -38,12 +41,9 @@ dependencies {
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
-    // swagger
-    implementation "io.springfox:springfox-boot-starter:$swaggerVersion"
-
     // tests
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$bootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 
 test {

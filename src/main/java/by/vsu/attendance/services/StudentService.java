@@ -9,11 +9,11 @@ import by.vsu.attendance.domain.Place;
 import by.vsu.attendance.domain.PlaceStatus;
 import by.vsu.attendance.domain.User;
 import by.vsu.attendance.exceptions.PlaceBookingException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class StudentService {
 
     @Transactional
     public void bookPlace(int roomNum, int placeNum, String username) {
-        User user = userRepository.findByUsername("sdt")
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("User with username=" + username + " doesn't exist"));
         Place place = placeRepository.findByNumberAndRoomNumber(placeNum, roomNum)
                 .orElseThrow(() -> new NoSuchElementException(

@@ -9,21 +9,22 @@ import by.vsu.attendance.dto.FloorDto;
 import by.vsu.attendance.dto.PlaceDto;
 import by.vsu.attendance.dto.RoomDto;
 import by.vsu.attendance.services.TeacherService;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Validated
 @RestController
-//@RequestMapping("/api/v1")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 @Slf4j
 public class TeacherController {
@@ -60,7 +61,7 @@ public class TeacherController {
 
     @GetMapping("/floors/{floorNum}/rooms")
     public List<RoomDto> getAllRoomsOnTheFloor(@PathVariable @Positive int floorNum,
-                                            @RequestParam(required = false, defaultValue = "false") boolean sort) {
+                                               @RequestParam(required = false, defaultValue = "false") boolean sort) {
         log.debug("Start getting all rooms in {} floor", floorNum);
         List<Room> rooms = sort ?
                 teacherService.getAllRoomsOnTheFloorSorted(floorNum) :

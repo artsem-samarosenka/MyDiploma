@@ -2,6 +2,8 @@ package by.vsu.attendance.controllers;
 
 import by.vsu.attendance.domain.Place;
 import by.vsu.attendance.services.StudentService;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -12,13 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Validated
 @RestController
-//@RequestMapping("/api/v1")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 @Slf4j
 public class StudentController {

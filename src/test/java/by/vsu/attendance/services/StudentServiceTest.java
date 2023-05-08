@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class StudentServiceTest {
+
     @InjectMocks
     private StudentService studentService;
     @Mock
@@ -60,7 +61,7 @@ class StudentServiceTest {
         int placeNum = 12;
         String username = "1901290090";
 
-        User testUser = new User(1L, username, "pass", UserRole.STUDENT, null);
+        User testUser = new User(1L, username, "pass", UserRole.STUDENT, null, false);
         Room testRoom = new Room(1L, null, roomNum, 20, 3);
         Place testPlace = new Place(1L, testRoom, null, placeNum, PlaceStatus.FREE);
 
@@ -69,7 +70,8 @@ class StudentServiceTest {
                 testUser,
                 testPlace,
                 AttendanceStatus.NOT_CONFIRMED,
-                testDate
+                testDate,
+                true
         );
 
         localDateTimeMockedStatic
