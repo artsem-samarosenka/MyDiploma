@@ -5,3 +5,11 @@ spring:
     password: ${DB_PASSWORD:rootroot}
   jpa:
     show-sql: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+      hibernate:
+        SQL: DEBUG
