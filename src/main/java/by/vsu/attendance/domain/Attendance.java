@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -34,18 +35,17 @@ public class Attendance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
 
-    @NotNull
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private AttendanceStatus attendanceStatus;
 
@@ -55,23 +55,15 @@ public class Attendance {
     private boolean isOpen;
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        Attendance that = (Attendance) obj;
-        return Objects.equals(id, that.id)
-                && Objects.equals(user, that.user)
-                && Objects.equals(place, that.place)
-                && attendanceStatus == that.attendanceStatus
-                && Objects.equals(dateTime, that.dateTime);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Attendance that = (Attendance) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, place, attendanceStatus, dateTime);
+        return getClass().hashCode();
     }
 }

@@ -6,7 +6,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -20,10 +19,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -38,18 +35,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
-    private String username;
-
-    @NotEmpty
-    private String password;
+    @NotEmpty private String username;
+    @NotEmpty private String password;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
-    @ToString.Exclude
-    @OneToMany(mappedBy = "user")
-    private transient Set<Attendance> attendances = new HashSet<>();
 
     private boolean isEnabled;
 

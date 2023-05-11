@@ -75,11 +75,11 @@ public class TeacherController {
     @GetMapping("/rooms/{roomNum}/places")
     public List<PlaceDto> getAllPlacesInTheRoom(@PathVariable @Positive int roomNum,
                                                 @RequestParam(required = false, defaultValue = "false") boolean sort) {
-        log.debug("Getting all places in {} room", roomNum);
+        log.debug("START: Getting all places in {} room", roomNum);
         List<Place> places = sort ?
                 teacherService.getAllPlacesInTheRoomSorted(roomNum) :
                 teacherService.getAllPlacesInTheRoom(roomNum);
-        log.info("Got places in {} room: {}", roomNum, places);
+        log.info("FINISH: Getting places in {} room: {}", roomNum, places);
         return placeConverter.entityToDto(places);
     }
 

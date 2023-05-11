@@ -3,9 +3,12 @@ package by.vsu.attendance.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Positive;
@@ -34,17 +37,17 @@ public class Room {
     private Long id;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "floor_id", nullable = false)
+    private Floor floor;
+
     @JsonIgnore
+    @ToString.Exclude
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private Set<Place> places = new HashSet<>();
 
-    @Positive
-    private int number;
-
+    @Positive private int number;
     private int capacity;
-
-    @Positive
-    private int floor;
 
     @Override
     public boolean equals(Object o) {

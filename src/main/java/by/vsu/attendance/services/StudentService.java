@@ -2,12 +2,12 @@ package by.vsu.attendance.services;
 
 import by.vsu.attendance.dao.AttendanceRepository;
 import by.vsu.attendance.dao.PlaceRepository;
-import by.vsu.attendance.dao.UserRepository;
+import by.vsu.attendance.dao.StudentRepository;
 import by.vsu.attendance.domain.Attendance;
 import by.vsu.attendance.domain.AttendanceStatus;
 import by.vsu.attendance.domain.Place;
 import by.vsu.attendance.domain.PlaceStatus;
-import by.vsu.attendance.domain.User;
+import by.vsu.attendance.domain.Student;
 import by.vsu.attendance.exceptions.PlaceBookingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -23,14 +23,14 @@ import java.util.Optional;
 @Slf4j
 public class StudentService {
 
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final PlaceRepository placeRepository;
     private final AttendanceRepository attendanceRepository;
 
     @Transactional
-    public void bookPlace(int roomNum, int placeNum, String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new NoSuchElementException("User with username=" + username + " doesn't exist"));
+    public void bookPlace(int roomNum, int placeNum, String accountId) {
+        Student student = studentRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new NoSuchElementException("Student with accountId=" + accountId + " doesn't exist"));
         Place place = placeRepository.findByNumberAndRoomNumber(placeNum, roomNum)
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("Place with placeNum=%s and roomNum=% doesn't exist", placeNum, roomNum)
@@ -41,12 +41,12 @@ public class StudentService {
             throw new PlaceBookingException("Place is already booked");
         }
 
-        // TODO check if a user already booked another place
+        // TODO check if a student already booked another place
 
         Attendance attendance = new Attendance();
         attendance.setAttendanceStatus(AttendanceStatus.NOT_CONFIRMED);
         attendance.setPlace(place);
-        attendance.setUser(user);
+        attendance.setStudent(student);
         attendance.setDateTime(LocalDateTime.now());
         attendance.setOpen(true);
         attendanceRepository.save(attendance);
@@ -56,14 +56,14 @@ public class StudentService {
         placeRepository.save(place);
         log.debug("Changed place {} status to {}", place, PlaceStatus.BOOKED);
 
-        log.info("User {} booked place {} in the room {}", username, placeNum, roomNum);
+        log.info("Student {} booked place {} in the room {}", student, placeNum, roomNum);
     }
 
-    public User getUserByBookedPlace(Place place) {
+    public Student getStudentByBookedPlace(Place place) {
         Optional<Attendance> attendance = place.getAttendances()
                 .stream()
                 .filter(Attendance::isOpen)
                 .findFirst();
-        return attendance.map(Attendance::getUser).orElse(null);
+        return attendance.map(Attendance::getStudent).orElse(null);
     }
 }

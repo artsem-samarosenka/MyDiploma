@@ -17,7 +17,7 @@ public class PlaceConverter {
     public PlaceDto entityToDto(Place place) {
         PlaceDto placeDto = new PlaceDto();
         placeDto.setPlaceStatus(place.getPlaceStatus());
-        placeDto.setUser(studentService.getUserByBookedPlace(place));
+        placeDto.setStudent(studentService.getStudentByBookedPlace(place));
         return placeDto;
     }
 

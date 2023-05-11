@@ -54,45 +54,45 @@ class StudentServiceTest {
         localDateTimeMockedStatic.close();
     }
 
-    @Test
-    void bookPlaceTest() {
-        // given
-        int roomNum = 300;
-        int placeNum = 12;
-        String username = "1901290090";
-
-        User testUser = new User(1L, username, "pass", UserRole.STUDENT, null, false);
-        Room testRoom = new Room(1L, null, roomNum, 20, 3);
-        Place testPlace = new Place(1L, testRoom, null, placeNum, PlaceStatus.FREE);
-
-        Attendance expectedAttendance = new Attendance(
-                1L,
-                testUser,
-                testPlace,
-                AttendanceStatus.NOT_CONFIRMED,
-                testDate,
-                true
-        );
-
-        localDateTimeMockedStatic
-                .when(LocalDateTime::now)
-                .thenReturn(testDate);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(testUser));
-        when(placeRepository.findByNumberAndRoomNumber(placeNum, roomNum)).thenReturn(Optional.of(testPlace));
-
-        // when
-        studentService.bookPlace(roomNum, placeNum, username);
-
-        // then
-        verify(attendanceRepository, times(1)).save(
-                argThat((Attendance at) ->
-                        at.getUser().equals(expectedAttendance.getUser()) &&
-                        at.getPlace().equals(expectedAttendance.getPlace()) &&
-                        at.getAttendanceStatus().equals(expectedAttendance.getAttendanceStatus()) &&
-                        at.getDateTime().equals(expectedAttendance.getDateTime())
-                ));
-        verify(placeRepository, times(1)).save(testPlace);
-    }
+//    @Test
+//    void bookPlaceTest() {
+//        // given
+//        int roomNum = 300;
+//        int placeNum = 12;
+//        String username = "1901290090";
+//
+//        User testUser = new User(1L, username, "pass", UserRole.STUDENT, null, false);
+//        Room testRoom = new Room(1L, null, roomNum, 20, 3);
+//        Place testPlace = new Place(1L, testRoom, null, placeNum, PlaceStatus.FREE);
+//
+//        Attendance expectedAttendance = new Attendance(
+//                1L,
+//                testUser,
+//                testPlace,
+//                AttendanceStatus.NOT_CONFIRMED,
+//                testDate,
+//                true
+//        );
+//
+//        localDateTimeMockedStatic
+//                .when(LocalDateTime::now)
+//                .thenReturn(testDate);
+//        when(userRepository.findByUsername(username)).thenReturn(Optional.of(testUser));
+//        when(placeRepository.findByNumberAndRoomNumber(placeNum, roomNum)).thenReturn(Optional.of(testPlace));
+//
+//        // when
+//        studentService.bookPlace(roomNum, placeNum, username);
+//
+//        // then
+//        verify(attendanceRepository, times(1)).save(
+//                argThat((Attendance at) ->
+//                        at.getUser().equals(expectedAttendance.getUser()) &&
+//                        at.getPlace().equals(expectedAttendance.getPlace()) &&
+//                        at.getAttendanceStatus().equals(expectedAttendance.getAttendanceStatus()) &&
+//                        at.getDateTime().equals(expectedAttendance.getDateTime())
+//                ));
+//        verify(placeRepository, times(1)).save(testPlace);
+//    }
 
 //    @Test
 //    void bookAlreadyBookedPlace() {

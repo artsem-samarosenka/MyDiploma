@@ -42,9 +42,9 @@ public class StudentController {
     @PostMapping("/rooms/{roomNum}/places/{placeNum}/book")
     public void bookPlace(@PathVariable @Positive(message = "Room number should be positive") int roomNum,
                           @PathVariable @Positive(message = "Place number should be positive") int placeNum,
-                          @RequestBody @NotEmpty(message = "Username shouldn't be empty") String username) {
-        log.info("Booking {} place in {} room for {}", placeNum, roomNum, username);
-        studentService.bookPlace(roomNum, placeNum, username);
+                          @RequestBody @NotEmpty(message = "AccountId shouldn't be empty") String accountId) {
+        log.info("Booking {} place in {} room for {}", placeNum, roomNum, accountId);
+        studentService.bookPlace(roomNum, placeNum, accountId);
     }
 
     @PostMapping("/free-place")

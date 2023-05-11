@@ -6,6 +6,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,14 +20,17 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
-
-    public final String AUTH_HEADER = "Authorization";
-    public final String BEARER = "Bearer ";
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+
+    @Value("${application.jwt.header}")
+    private String jwtHeader;
+
+    @Value("${application.jwt.prefix}")
+    private String jwtPrefix;
 
     @Override
     protected void doFilterInternal(
@@ -33,15 +38,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        final String authHeader = request.getHeader(AUTH_HEADER);
+        final String authHeader = request.getHeader(jwtHeader);
         final String jwt;
         final String username;
 
-        if (authHeader == null || !authHeader.startsWith(BEARER)) {
+        if (authHeader == null || !authHeader.startsWith(jwtPrefix)) {
             filterChain.doFilter(request, response);
             return;
         }
-        jwt = authHeader.substring(BEARER.length());
+        jwt = authHeader.substring(jwtPrefix.length());
         username = jwtService.extractUsername(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);

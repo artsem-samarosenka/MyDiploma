@@ -1,18 +1,17 @@
 package by.vsu.attendance.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,41 +25,41 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "place")
+@Table(name = "student")
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Place {
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @JsonIgnore
     @ToString.Exclude
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "student")
     private Set<Attendance> attendances = new HashSet<>();
 
-    @Positive
-    private int number;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private PlaceStatus placeStatus;
+    @NotEmpty private String name;
+    @NotEmpty private String surname;
+    @NotEmpty private String patronymic;
+    @Positive private int course;
+    @Nullable private String faculty;
+    @NotEmpty private String accountId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Place place = (Place) o;
-        return id != null && Objects.equals(id, place.id);
+        Student student = (Student) o;
+        return getId() != null && Objects.equals(getId(), student.getId());
     }
 
     @Override

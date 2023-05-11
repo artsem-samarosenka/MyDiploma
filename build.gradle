@@ -37,6 +37,9 @@ dependencies {
     // mysql
     implementation "mysql:mysql-connector-java:$mysqlVersion"
 
+    // migration DB tool
+    implementation 'org.flywaydb:flyway-mysql'
+
     // lombok
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
