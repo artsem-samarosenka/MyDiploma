@@ -1,10 +1,12 @@
 package by.vsu.attendance.services;
 
 import by.vsu.attendance.dao.AttendanceRepository;
+import by.vsu.attendance.dao.FloorRepository;
 import by.vsu.attendance.dao.PlaceRepository;
 import by.vsu.attendance.dao.RoomRepository;
 import by.vsu.attendance.domain.Attendance;
 import by.vsu.attendance.domain.AttendanceStatus;
+import by.vsu.attendance.domain.Floor;
 import by.vsu.attendance.domain.Place;
 import by.vsu.attendance.domain.PlaceStatus;
 import by.vsu.attendance.domain.Room;
@@ -28,6 +30,13 @@ public class TeacherService {
     private final AttendanceRepository attendanceRepository;
     private final RoomRepository roomRepository;
     private final PlaceRepository placeRepository;
+    private final FloorRepository floorRepository;
+
+    public List<Floor> getAllFloorsSorted() {
+        List<Floor> floors = floorRepository.findAll();
+        floors.sort(Comparator.comparingInt(Floor::getNumber));
+        return floors;
+    }
 
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
@@ -73,7 +82,6 @@ public class TeacherService {
             );
         }
         place.setPlaceStatus(PlaceStatus.FREE);
-        // TODO Student still has booked place even after free
         placeRepository.save(place);
     }
 
@@ -82,7 +90,6 @@ public class TeacherService {
                 .orElseThrow(() -> new NoSuchElementException("Room with roomNumber='" + roomNumber + "' doesn't exist"));
         Set<Place> places = room.getPlaces();
         places.forEach(place -> place.setPlaceStatus(PlaceStatus.FREE));
-        // TODO Student still has booked place even after free
         placeRepository.saveAll(places);
     }
 
@@ -97,7 +104,6 @@ public class TeacherService {
 
         List<Attendance> attendancesToUpdate = new ArrayList<>();
         List<Place> placesToUpdate = new ArrayList<>();
-        // TODO Improve this code? Because I make N queries to DB. Maybe do it with DB query/repo?
         for (Place place : bookedPlaces) {
             place.getAttendances()
                     .stream()

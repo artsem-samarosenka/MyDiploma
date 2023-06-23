@@ -20,7 +20,6 @@ public class PlaceConverter {
         PlaceDto placeDto = new PlaceDto();
         placeDto.setNumber(place.getNumber());
         placeDto.setPlaceStatus(place.getPlaceStatus());
-        // TODO not all student, only lastname
         Student student = studentService.getStudentByBookedPlace(place);
         if (student != null && place.getPlaceStatus() == PlaceStatus.BOOKED) {
             placeDto.setStudentSurname(student.getSurname());

@@ -59,7 +59,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-            } // TODO throw exception about wrong credentials
+            }
         }
         filterChain.doFilter(request, response);
     }

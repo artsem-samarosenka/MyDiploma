@@ -10,6 +10,5 @@ import java.util.Optional;
 public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     Optional<Place> findByNumberAndRoomNumber(int placeNumber, int roomNumber);
-
     List<Place> findAllByRoom(Room room);
 }

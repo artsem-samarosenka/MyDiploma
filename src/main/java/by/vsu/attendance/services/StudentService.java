@@ -172,7 +172,6 @@ public class StudentService {
      * @return {@link CurrentBookedPlaceResponse} or null if Student doesn't have any booked places
      */
     private CurrentBookedPlaceResponse getStudentCurrentBookedPlace(Student student) {
-        // TODO Can optimize?
         Attendance latestAttendance = student.getAttendances()
                 .stream()
                 .max(Comparator.comparing(Attendance::getDateTime))

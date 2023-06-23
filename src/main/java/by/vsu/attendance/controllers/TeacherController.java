@@ -2,9 +2,9 @@ package by.vsu.attendance.controllers;
 
 import by.vsu.attendance.convertor.PlaceConverter;
 import by.vsu.attendance.convertor.RoomConverter;
+import by.vsu.attendance.domain.Floor;
 import by.vsu.attendance.domain.Place;
 import by.vsu.attendance.domain.Room;
-import by.vsu.attendance.dto.FloorDto;
 import by.vsu.attendance.dto.PlaceDto;
 import by.vsu.attendance.dto.RoomDto;
 import by.vsu.attendance.services.TeacherService;
@@ -34,6 +34,14 @@ public class TeacherController {
     private final PlaceConverter placeConverter;
     private final RoomConverter roomConverter;
 
+    @GetMapping("/floors")
+    public List<Floor> getAllFloors() {
+        log.debug("Processing GET request for /floors");
+        List<Floor> floors = teacherService.getAllFloorsSorted();
+        log.info("Returning floors '{}'", floors);
+        return floors;
+    }
+
     @GetMapping("/rooms")
     public List<RoomDto> getAllRooms(
             @RequestParam(required = false, defaultValue = "false") boolean sort
@@ -42,24 +50,6 @@ public class TeacherController {
         List<Room> rooms = sort ? teacherService.getAllRoomsSorted() : teacherService.getAllRooms();
         log.info("Returning '{}' number of Rooms.", rooms.size());
         return roomConverter.entityToDto(rooms);
-    }
-
-    @GetMapping("/floors")
-    public List<FloorDto> getAllFloors() {
-        // TODO think about needs of this method
-        log.debug("Getting all floors.");
-        FloorDto floorDto1 = new FloorDto();
-        floorDto1.setNumber(1);
-        FloorDto floorDto2 = new FloorDto();
-        floorDto2.setNumber(2);
-        FloorDto floorDto3 = new FloorDto();
-        floorDto3.setNumber(3);
-        FloorDto floorDto4 = new FloorDto();
-        floorDto4.setNumber(4);
-        FloorDto floorDto5 = new FloorDto();
-        floorDto5.setNumber(5);
-        log.info("Got floors: {}", List.of(floorDto1, floorDto2, floorDto3, floorDto4, floorDto5));
-        return List.of(floorDto1, floorDto2, floorDto3, floorDto4, floorDto5);
     }
 
     @GetMapping("/floors/{floorNumber}/rooms")
@@ -113,47 +103,6 @@ public class TeacherController {
     ) {
         log.debug("Processing POST request for /rooms/{}/confirm", roomNumber);
         teacherService.approveAttendances(roomNumber);
-        // TODO we approved all attendances. Even if that attendances from yesterday. Fix it
         log.info("Approved all attendances in '{}' room", roomNumber);
     }
-
-//    @GetMapping("/rooms/{roomNumber}/students")
-//    public List<User> getAllStudentInRoom(@PathVariable
-//                                          @Positive(message = "Room number should be positive")
-//                                          int roomNumber) {
-//        // TODO
-//        return null;
-//    }
-//
-//    @GetMapping("/rooms/{roomNumber}/students/present")
-//    public List<User> getPresentStudentsInRoom(@PathVariable
-//                                               @Positive(message = "Room number should be positive")
-//                                               int roomNumber) {
-//        // TODO
-//        return null;
-//    }
-//
-//    @GetMapping("/rooms/{roomNumber}/students/absent")
-//    public List<User> getAbsentStudentsInRoom(@PathVariable
-//                                              @Positive(message = "Room number should be positive")
-//                                              int roomNumber) {
-//        // TODO
-//        return null;
-//    }
-//
-////    @GetMapping("/rooms/{roomNumber}/places")
-////    public List<Place> getAllPlacesInRoom(@PathVariable
-////                                          @Positive(message = "Room number should be positive")
-////                                          int roomNumber) {
-////        // TODO
-////        return null;
-////    }
-//
-//    @GetMapping("/rooms/{roomNumber}/places/{placeNumber}/student")
-//    public User getStudentByPlace(@PathVariable @Positive(message = "Room number should be positive") int roomNumber,
-//                                  @PathVariable @Positive(message = "Place number should be positive") int placeNumber) {
-//        // TODO
-//        return null;
-//    }
-//
 }

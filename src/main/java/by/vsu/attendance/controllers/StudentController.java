@@ -33,11 +33,6 @@ public class StudentController {
     private final StudentService studentService;
     private final JwtService jwtService;
 
-    @GetMapping
-    public String test() {
-        return "Hello";
-    }
-
     @GetMapping("/student/info")
     public StudentInfoResponse getStudentInfo(
             @RequestHeader("Authorization") @NotBlank String authHeader
