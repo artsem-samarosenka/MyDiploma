@@ -12,9 +12,9 @@ values ('john', 'doe', 'admin', 1),
        ('emily', 'smith', 'admin', 5);
 
 -- Inserting data into the `student` table
-insert into student (course, faculty, name, patronymic, surname, user_id, account_id)
-values (3, 'computer science', 'alice', 'smith', 'student', 2, '1901290080'),
-       (4, 'chemistry', 'emma', 'brown', 'student', 4, '1901290081');
+insert into student (course, faculty, name, patronymic, surname, user_id, account_id, current_missed_lessons, max_missed_lessons)
+values (3, 'computer science', 'alice', 'smith', 'anderson', 2, '1901290080', 3, 36),
+       (4, 'chemistry', 'emma', 'brown', 'allen', 4, '1901290081', 20, 36);
 
 -- Inserting data into the `teacher` table
 insert into teacher (faculty, name, patronymic, surname, user_id)
@@ -55,7 +55,7 @@ values  ('1', 'FREE', '1'),
         ('1', 'FREE', '10');
 
 -- Inserting data into the `attendance` table
-insert into attendance (attendance_status, date_time, is_open, place_id, student_id)
-values ('NOT_CONFIRMED', '2023-05-11 10:00:00', 1, 1, 1),
-       ('CONFIRMED', '2023-05-11 10:00:00', 0, 2, 1),
-       ('NOT_CONFIRMED', '2023-05-11 10:00:00', 1, 3, 2);
+insert into attendance (attendance_status, date_time, place_id, student_id)
+values ('NOT_CONFIRMED', '2023-05-11 10:00:00', 1, 1),
+       ('CONFIRMED', '2023-05-11 10:00:00', 2, 1),
+       ('NOT_CONFIRMED', '2023-05-11 10:00:00', 3, 2);

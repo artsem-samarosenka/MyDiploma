@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,9 +38,9 @@ public class Teacher {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @NotEmpty private String name;
-    @NotEmpty private String surname;
-    @NotEmpty private String patronymic;
+    @NotBlank private String name;
+    @NotBlank private String surname;
+    @NotBlank private String patronymic;
     private String faculty;
 
     @Override

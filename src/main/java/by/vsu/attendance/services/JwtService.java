@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,26 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "28482B4D6251655468576D5A7134743777217A24432646294A404E635266556A";
+    private static final String SECRET_KEY = "6D597133743677397A24432646294A404E635266556A576E5A72347537782141";
+
+    @Value("${application.jwt.prefix}")
+    private String jwtPrefix;
+
+    public String extractUsernameByAuthHeader(String authHeader) {
+        if (!authHeader.startsWith(jwtPrefix)) {
+            throw new IllegalArgumentException();
+        }
+        final String jwt = authHeader.substring(jwtPrefix.length());
+        return extractUsername(jwt);
+    }
+
+    public String extractRoleByAuthHeader(String authHeader) {
+        if (!authHeader.startsWith(jwtPrefix)) {
+            throw new IllegalArgumentException();
+        }
+        final String jwt = authHeader.substring(jwtPrefix.length());
+        return extractClaim(jwt, claims -> claims.get("role", String.class));
+    }
 
     public String extractUsername(String jwt) {
         return extractClaim(jwt, Claims::getSubject);

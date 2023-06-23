@@ -7,7 +7,9 @@ import by.vsu.attendance.dto.AuthResponse;
 import by.vsu.attendance.dto.RegisterRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,8 +43,8 @@ public class AuthService {
                         authRequest.getPassword()
                 )
         );
-        User user = userService.getUserByUsername(authRequest.getUsername());
 
+        User user = userService.getUserByUsername(authRequest.getUsername());
         String jwt = jwtService.generateToken(user);
 
         AuthResponse authResponse = new AuthResponse();

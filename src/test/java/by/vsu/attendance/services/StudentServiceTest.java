@@ -1,15 +1,23 @@
 package by.vsu.attendance.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import by.vsu.attendance.dao.AttendanceRepository;
 import by.vsu.attendance.dao.PlaceRepository;
-import by.vsu.attendance.dao.UserRepository;
+import by.vsu.attendance.dao.StudentRepository;
 import by.vsu.attendance.domain.Attendance;
 import by.vsu.attendance.domain.AttendanceStatus;
 import by.vsu.attendance.domain.Place;
 import by.vsu.attendance.domain.PlaceStatus;
 import by.vsu.attendance.domain.Room;
-import by.vsu.attendance.domain.User;
-import by.vsu.attendance.domain.UserRole;
+import by.vsu.attendance.domain.Student;
+import by.vsu.attendance.exceptions.PlaceBookingException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -22,23 +30,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 class StudentServiceTest {
 
     @InjectMocks
     private StudentService studentService;
-    @Mock
-    private UserRepository userRepository;
-    @Mock
-    private AttendanceRepository attendanceRepository;
-    @Mock
-    private PlaceRepository placeRepository;
+
+    @Mock private AttendanceRepository attendanceRepository;
+    @Mock private PlaceRepository placeRepository;
+    @Mock private StudentRepository studentRepository;
 
     private static LocalDateTime testDate;
     private static MockedStatic<LocalDateTime> localDateTimeMockedStatic;
@@ -54,64 +54,65 @@ class StudentServiceTest {
         localDateTimeMockedStatic.close();
     }
 
-//    @Test
-//    void bookPlaceTest() {
-//        // given
-//        int roomNum = 300;
-//        int placeNum = 12;
-//        String username = "1901290090";
-//
-//        User testUser = new User(1L, username, "pass", UserRole.STUDENT, null, false);
-//        Room testRoom = new Room(1L, null, roomNum, 20, 3);
-//        Place testPlace = new Place(1L, testRoom, null, placeNum, PlaceStatus.FREE);
-//
-//        Attendance expectedAttendance = new Attendance(
-//                1L,
-//                testUser,
-//                testPlace,
-//                AttendanceStatus.NOT_CONFIRMED,
-//                testDate,
-//                true
-//        );
-//
-//        localDateTimeMockedStatic
-//                .when(LocalDateTime::now)
-//                .thenReturn(testDate);
-//        when(userRepository.findByUsername(username)).thenReturn(Optional.of(testUser));
-//        when(placeRepository.findByNumberAndRoomNumber(placeNum, roomNum)).thenReturn(Optional.of(testPlace));
-//
-//        // when
-//        studentService.bookPlace(roomNum, placeNum, username);
-//
-//        // then
-//        verify(attendanceRepository, times(1)).save(
-//                argThat((Attendance at) ->
-//                        at.getUser().equals(expectedAttendance.getUser()) &&
-//                        at.getPlace().equals(expectedAttendance.getPlace()) &&
-//                        at.getAttendanceStatus().equals(expectedAttendance.getAttendanceStatus()) &&
-//                        at.getDateTime().equals(expectedAttendance.getDateTime())
-//                ));
-//        verify(placeRepository, times(1)).save(testPlace);
-//    }
+    @Test
+    void bookPlaceTest() {
+        // given
+        final int testRoomNumber = 300;
+        final int testPlaceNumber = 12;
+        final String testAccountId = "1901290090";
 
-//    @Test
-//    void bookAlreadyBookedPlace() {
-//        // given
-//        int roomNum = 300;
-//        int placeNum = 12;
-//        String username = "1901290090";
-//
-//        User testUser = new User(1L, username, "pass", UserRole.STUDENT);
-//        Room testRoom = new Room(1L, roomNum, 20, 3, null);
-//        Place testPlace = new Place(1L, placeNum, PlaceStatus.BOOKED, testRoom);
-//        testRoom.setPlaces(List.of(testPlace));
-//
-//        when(userRepository.findByUsername(username)).thenReturn(Optional.of(testUser));
-//        when(roomRepository.findByNumber(roomNum)).thenReturn(Optional.of(testRoom));
-//        when(placeRepository.findByNumberAndRoomId(placeNum, testRoom.getId())).thenReturn(Optional.of(testPlace));
-//
-//        // then
-//        Assertions.assertThrows(PlaceBookingException.class,
-//                () -> studentService.bookPlace(roomNum, placeNum, username));
-//    }
+        final Student testStudent = new Student();
+        testStudent.setAccountId(testAccountId);
+        final Room testRoom = new Room();
+        testRoom.setNumber(testRoomNumber);
+        final Place testPlace = new Place();
+        testPlace.setNumber(testPlaceNumber);
+
+        final Attendance expectedAttendance = new Attendance(
+                null,
+                testStudent,
+                testPlace,
+                AttendanceStatus.NOT_CONFIRMED,
+                testDate
+        );
+
+        localDateTimeMockedStatic
+                .when(LocalDateTime::now)
+                .thenReturn(testDate);
+        when(studentRepository.findByAccountId(testAccountId)).thenReturn(Optional.of(testStudent));
+        when(placeRepository.findByNumberAndRoomNumber(testPlaceNumber, testRoomNumber)).thenReturn(Optional.of(testPlace));
+
+        // when
+        studentService.bookPlace(testRoomNumber, testPlaceNumber, testAccountId);
+
+        // then
+        verify(attendanceRepository, times(1)).save(
+                argThat((Attendance at) ->
+                        at.getStudent().equals(expectedAttendance.getStudent()) &&
+                                at.getPlace().equals(expectedAttendance.getPlace()) &&
+                                at.getAttendanceStatus().equals(expectedAttendance.getAttendanceStatus()) &&
+                                at.getDateTime().equals(expectedAttendance.getDateTime())
+                ));
+        assertEquals(PlaceStatus.BOOKED, testPlace.getPlaceStatus());
+        verify(placeRepository, times(1)).save(testPlace);
+    }
+
+    @Test
+    void bookAlreadyBookedPlace() {
+        // given
+        final int testRoomNumber = 300;
+        final int testPlaceNumber = 12;
+        final String testAccountId = "1901290090";
+
+        final Student testStudent = new Student();
+        final Place testPlace = new Place();
+        testPlace.setPlaceStatus(PlaceStatus.BOOKED);
+
+        when(studentRepository.findByAccountId(testAccountId)).thenReturn(Optional.of(testStudent));
+        when(placeRepository.findByNumberAndRoomNumber(testPlaceNumber, testRoomNumber)).thenReturn(Optional.of(testPlace));
+
+        // then
+        assertThrows(PlaceBookingException.class,
+                () -> studentService.bookPlace(testRoomNumber, testPlaceNumber, testAccountId));
+    }
 }

@@ -52,8 +52,6 @@ public class Attendance {
     @PastOrPresent
     private LocalDateTime dateTime;
 
-    private boolean isOpen;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

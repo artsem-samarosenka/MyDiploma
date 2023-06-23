@@ -1,9 +1,9 @@
 create table `user` (
    id bigint not null auto_increment,
     is_enabled bit not null,
-    password varchar(255),
-    role varchar(255),
-    username varchar(255),
+    password varchar(255) not null,
+    role varchar(255) not null,
+    username varchar(255) not null,
     primary key (id)
 );
 
@@ -25,6 +25,8 @@ create table student (
     patronymic varchar(255) not null,
     surname varchar(255) not null,
     account_id varchar(255) not null,
+    current_missed_lessons integer,
+    max_missed_lessons integer,
     user_id bigint not null,
     primary key (id),
     foreign key (user_id) references user (id)
@@ -70,7 +72,6 @@ create table attendance (
     id bigint not null auto_increment,
     attendance_status varchar(255) not null,
     date_time datetime(6) not null,
-    is_open bit not null,
     place_id bigint not null,
     student_id bigint not null,
     primary key (id),

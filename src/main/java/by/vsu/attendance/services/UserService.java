@@ -17,7 +17,8 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(NoSuchElementException::new);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("User with username '%s' doesn't exist".formatted(username)));
     }
 
     public User getUserById(Long id) {

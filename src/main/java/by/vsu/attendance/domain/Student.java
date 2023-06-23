@@ -11,7 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,12 +47,14 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private Set<Attendance> attendances = new HashSet<>();
 
-    @NotEmpty private String name;
-    @NotEmpty private String surname;
-    @NotEmpty private String patronymic;
+    @NotBlank private String name;
+    @NotBlank private String surname;
+    @NotBlank private String patronymic;
     @Positive private int course;
     @Nullable private String faculty;
-    @NotEmpty private String accountId;
+    @NotBlank private String accountId;
+    @Positive private int currentMissedLessons;
+    @Positive private int maxMissedLessons;
 
     @Override
     public boolean equals(Object o) {

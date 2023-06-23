@@ -1,6 +1,8 @@
 package by.vsu.attendance.convertor;
 
 import by.vsu.attendance.domain.Place;
+import by.vsu.attendance.domain.PlaceStatus;
+import by.vsu.attendance.domain.Student;
 import by.vsu.attendance.dto.PlaceDto;
 import by.vsu.attendance.services.StudentService;
 import lombok.AllArgsConstructor;
@@ -16,8 +18,13 @@ public class PlaceConverter {
 
     public PlaceDto entityToDto(Place place) {
         PlaceDto placeDto = new PlaceDto();
+        placeDto.setNumber(place.getNumber());
         placeDto.setPlaceStatus(place.getPlaceStatus());
-        placeDto.setStudent(studentService.getStudentByBookedPlace(place));
+        // TODO not all student, only lastname
+        Student student = studentService.getStudentByBookedPlace(place);
+        if (student != null && place.getPlaceStatus() == PlaceStatus.BOOKED) {
+            placeDto.setStudentSurname(student.getSurname());
+        }
         return placeDto;
     }
 

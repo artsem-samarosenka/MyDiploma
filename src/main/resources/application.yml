@@ -4,7 +4,7 @@ spring:
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:rootroot}
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: validate
     properties:
@@ -20,6 +20,9 @@ logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        security: INFO
       hibernate:
         SQL: INFO
+    by:
+      vsu:
+        attendance: INFO

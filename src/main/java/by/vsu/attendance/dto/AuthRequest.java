@@ -1,11 +1,11 @@
 package by.vsu.attendance.dto;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 public class AuthRequest {
 
-    private @NotEmpty String username;
-    private @NotEmpty String password;
+    @NotBlank private String username;
+    @NotBlank private String password;
 }
